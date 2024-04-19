@@ -1,0 +1,85 @@
+// StringReverse.java - Interface
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface StringReverse extends Remote {
+    String reverse(String input) throws RemoteException;
+}
+
+
+
+// StringReverseImpl.java - Implementation
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
+public class StringReverseImpl extends UnicastRemoteObject implements StringReverse {
+    protected StringReverseImpl() throws RemoteException {
+        super();
+    }
+
+    @Override
+    public String reverse(String input) throws RemoteException {
+        return new StringBuilder(input).reverse().toString();
+    }
+}
+
+
+
+// StringReverseServer.java - Server
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+
+public class StringReverseServer {
+    public static void main(String[] args) {
+        try {
+            // Create the registry
+            LocateRegistry.createRegistry(1099);
+
+            // Create an instance of the implementation class
+            StringReverseImpl reverseImpl = new StringReverseImpl();
+
+            // Bind the instance with the RMI registry
+            Naming.rebind("//localhost/StringReverseService", reverseImpl);
+
+            System.out.println("Server is running...");
+        } catch (RemoteException | java.net.MalformedURLException e) {
+            System.err.println("Exception occurred in the server: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+// StringReverseClient.java - Client
+import java.rmi.Naming;
+
+public class StringReverseClient {
+    public static void main(String[] args) {
+        try {
+            // Look up for the remote object
+            StringReverse reverseService = (StringReverse) Naming.lookup("//localhost/StringReverseService");
+
+            // Call the remote method
+            String reversed = reverseService.reverse("Hello, World!");
+
+            // Print the result
+            System.out.println("Reversed String: " + reversed);
+        } catch (Exception e) {
+            System.err.println("Exception occurred in the client: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
+
+// output line:
+// javac *.java
+// rmiregistry
+// java StringReverseServer
+// java StringReverseClient
