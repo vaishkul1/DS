@@ -1,0 +1,109 @@
+//Client.java
+
+import java.rmi.*;
+import java.util.Scanner;
+
+public class Client {
+	public static void main(String args[]){
+	
+		Scanner sc = new Scanner(System.in);
+		
+		try {
+		
+			ServerIntf access = (ServerIntf) Naming.lookup("rmi://localhost/Server"); //storing object chya reference la access
+			
+			
+			System.out.println("Enter first string: ");
+			String str1 = sc.nextLine();
+			
+			System.out.println("Enter second string: ");
+			String str2 = sc.nextLine();
+			
+			System.out.println("Are strings equal? : " + access.compareStrings(str1,str2));
+			
+		}
+		
+		
+		catch(Exception ae) {
+		
+			System.out.println("Exception occured at Client!");	
+		}
+	}			
+	
+}	
+
+
+
+
+
+
+
+// Server.java
+
+import java.rmi.*;
+
+public class Server {
+
+	public static void main(String args[]) {
+	
+		try {
+			ServerImpl obj = new ServerImpl();
+			Naming.rebind("Server",obj);
+		}
+		
+		catch(Exception ae) {
+		
+			ae.printStackTrace();
+			System.out.println("Exception occured at Server!");	
+		}
+	}			
+	
+}	
+
+
+//ServerImpl.java
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class ServerImpl extends UnicastRemoteObject implements ServerIntf {
+
+	public ServerImpl() throws RemoteException {
+		super();
+	}
+	
+	@Override
+	public boolean compareStrings(String str1,String str2) throws RemoteException {
+	
+		return str1.equals(str2);
+	
+	}
+	
+	
+	
+}
+
+
+
+// ServerIntf.java
+
+import java.rmi.*;
+
+interface ServerIntf extends Remote {
+
+	public boolean compareStrings(String str1,String str2) throws RemoteException;
+	
+	
+}	
+
+
+	
+
+
+
+//output lines:
+
+// javac *.java
+// rmiregistry
+// java Server (new tab of terminal)
+// java Client (new tab of terminal)

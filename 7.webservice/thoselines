@@ -1,0 +1,4 @@
+double num1,num2;
+num1 = Double.parseDouble(request.getParameter("num1"));
+num2 = Double.parseDouble(request.getParameter("num2"));
+out.println("<h1>multiplication is " + multiplication(num1,num2) + "</h1>");

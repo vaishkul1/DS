@@ -1,0 +1,110 @@
+// Client.java
+import java.rmi.*;
+import java.util.Scanner;
+
+public class Client {
+	public static void main(String args[]){
+	
+		Scanner sc = new Scanner(System.in);
+		
+		try {
+		
+			ServerIntf access = (ServerIntf) Naming.lookup("rmi://localhost/Server"); //storing object chya reference la access
+			
+			
+			System.out.println("Enter the string : ");
+			String str1 = sc.nextLine();
+			
+			
+			
+			System.out.println("Palindrome status : " + access.Palindrome(str1));
+			
+			
+			
+		}
+		
+		
+		catch(Exception ae) {
+		
+			System.out.println("Exception occured at Client!");	
+		}
+	}			
+	
+}	
+
+
+
+
+// Server.java
+
+import java.rmi.*;
+
+public class Server {
+
+	public static void main(String args[]) {
+	
+		try {
+			ServerImpl obj = new ServerImpl();
+			Naming.rebind("Server",obj);
+		}
+		
+		catch(Exception ae) {
+		
+			ae.printStackTrace();
+			System.out.println("Exception occured at Server!");	
+		}
+	}			
+	
+}	
+
+
+
+
+// ServerImpl.java
+
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class ServerImpl extends UnicastRemoteObject implements ServerIntf {
+
+	public ServerImpl() throws RemoteException {
+		super();
+	}
+	
+	
+	public boolean Palindrome(String str1) throws RemoteException {
+	
+	
+		//remove all non-alphanumeric characters and convert to lowercase
+		String cleanStr = str1.replaceAll("[^a-zA-Z0-9]"," ").toLowerCase();
+		
+		//check if string is equal to its reverse
+		return cleanStr.equals(new StringBuilder(cleanStr).reverse().toString());
+	
+	}
+	
+	
+		
+}
+	
+
+
+// ServerIntf.java
+
+import java.rmi.*;
+
+interface ServerIntf extends Remote {
+
+	public boolean Palindrome(String str1) throws RemoteException;
+	
+	
+}	
+
+
+
+//output lines:
+
+// javac *.java
+// rmiregistry
+// java Server (new tab of terminal)
+// java Client (new tab of terminal)
