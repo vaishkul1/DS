@@ -85,6 +85,42 @@ public class ServerImpl extends UnicastRemoteObject implements ServerIntf {
 
 
 
+
+/*
+if external says dont use inbuilt function
+public class ServerImpl extends UnicastRemoteObject implements ServerIntf {
+
+    public ServerImpl() throws RemoteException {
+        super();
+    }
+    
+    @Override
+    public boolean compareStrings(String str1, String str2) throws RemoteException {
+        if (str1.length() != str2.length()) {
+            return false; // If lengths are different, strings are not equal
+        }
+        
+        for (int i = 0; i < str1.length(); i++) {
+            if (str1.charAt(i) != str2.charAt(i)) {
+                return false; // If any character is different, strings are not equal
+            }
+        }
+        
+        return true; // If all characters are same, strings are equal
+    }
+}
+
+
+
+
+ */
+
+
+
+
+
+
+
 // ServerIntf.java
 
 import java.rmi.*;
