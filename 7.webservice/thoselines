@@ -2,3 +2,38 @@ double num1,num2;
 num1 = Double.parseDouble(request.getParameter("num1"));
 num2 = Double.parseDouble(request.getParameter("num2"));
 out.println("<h1>multiplication is " + multiplication(num1,num2) + "</h1>");
+
+
+
+
+
+
+
+
+
+public class PalindromeChecker {
+    public static boolean isPalindrome(String s) {
+        // Convert the string to lowercase
+        s = s.toLowerCase();
+        // Initialize pointers for the start and end of the string
+        int start = 0;
+        int end = s.length() - 1;
+        // Iterate until the pointers meet
+        while (start < end) {
+            // Check if the characters at the pointers match
+            if (s.charAt(start) != s.charAt(end)) {
+                return false;
+            }
+            // Move the pointers towards each other
+            start++;
+            end--;
+        }
+        // If the loop completes without returning false, the string is a palindrome
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String string = "A man, a plan, a canal, Panama!";
+        System.out.println(isPalindrome(string)); // Output: true
+    }
+}
